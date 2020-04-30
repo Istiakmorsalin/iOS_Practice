@@ -315,17 +315,72 @@ class IstiakPerson {
                        if let name = person?.name {
                            print("New name is \(name) and old name is \(String(describing: oldValue?.name))")
                        }
-            
+
         } willSet(myNewVal) {
-            
+
             print("Called before setting the new value")
                        if let newName = myNewVal?.name {
                            print("New name is \(newName)")
                        }
-        
+
         }
     }
 }
 
 var istiak = IstiakPerson()
 istiak.person = Istiak(name: "Babla", age: 23)
+
+// Swift Collection
+
+var someInts = [Int]()
+print("someInts is of type [Int] with \(someInts.count) items")
+
+someInts.append(3)
+someInts = []
+
+var threeDoubles = Array(repeating: 0.0, count: 3)
+
+var anotherThreeDoubles = Array(repeating: 2.5, count: 3)
+
+//var sixDoubles = threeDoubles + anotherThreeDoubles
+
+//array literal
+
+var shoppingList: [String] = ["Eggs", "Milk"]
+print("The shopping list contains \(shoppingList.count) items.")
+
+if shoppingList.isEmpty {
+    print("empty")
+} else {
+    print("not empty")
+}
+
+shoppingList.append("Flour")
+
+shoppingList +=  ["Baking Powder"]
+
+var firstItem = shoppingList[0]
+
+shoppingList[0] = "Six Eggs"
+
+//shoppingList[4...6] = ["Bananas", "Apples"]
+
+shoppingList.insert("Syrup", at: 0)
+
+let syrup =  shoppingList.remove(at: 0)
+
+let apples = shoppingList.removeLast()
+
+for item in shoppingList {
+    print(item)
+}
+
+//For each item in the array, the enumerated() method returns a tuple composed of an integer and the item
+for (index,value) in shoppingList.enumerated() {
+    print("Item \(index + 1): \(value)")
+}
+
+
+
+
+
