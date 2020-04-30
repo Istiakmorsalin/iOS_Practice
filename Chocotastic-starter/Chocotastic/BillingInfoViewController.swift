@@ -47,6 +47,8 @@ extension BillingInfoViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     title = "💳 Info"
+    setupCardImageDisplay()
+    setupTextChangeHandling()
   }
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -120,6 +122,16 @@ private extension BillingInfoViewController {
         self.cvvTextField.valid = $0
       })
       .disposed(by: disposeBag)
+    
+    let everythingValid = Observable
+      .combineLatest(creditCardValid, expirationValid, cvvValid) {
+        $0 && $1 && $2 //All must be true
+    }
+        
+    everythingValid
+      .bind(to: purchaseButton.rx.isEnabled)
+      .disposed(by: disposeBag)
+
 
   }
 }
