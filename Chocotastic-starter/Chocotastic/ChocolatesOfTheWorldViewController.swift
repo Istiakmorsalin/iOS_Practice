@@ -43,6 +43,7 @@ extension ChocolatesOfTheWorldViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     title = "Chocolate!!!"
+    setupCellConfiguration()
     
 //    tableView.dataSource = self
 //    tableView.delegate = self
@@ -68,8 +69,17 @@ private extension ChocolatesOfTheWorldViewController {
     .disposed(by: disposeBag)
   }
   
+  func setupCellConfiguration() {
+    europeanChocolates.bind(to: tableView
+      .rx
+      .items(cellIdentifier: ChocolateCell.Identifier,
+               cellType: ChocolateCell.self)) { //3
+                row, chocolate, cell in
+                cell.configureWithChocolate(chocolate: chocolate) //4
+      }
+      .disposed(by: disposeBag) //5
+  }
 
-  
 }
 
 //MARK: - Imperative methods
