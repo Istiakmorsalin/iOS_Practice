@@ -112,7 +112,7 @@ struct Size {
 struct Rect {
     var origin = Point()
     var size = Size()
-    
+
     var center: Point {
         get {
             let centerX = origin.x + (size.width / 2)
@@ -201,11 +201,11 @@ extension Int {
 
 class Stack {
     public private(set) var items = [Int]() // Empty items array
-    
+
      func push(_ item: Int) {
         items.append(item)
     }
-    
+
      func pop() -> Int? {
         if !items.isEmpty {
            return items.removeLast()
@@ -244,7 +244,7 @@ class Starship: FullyNamed {
         self.name = name
         self.prefix = prefix
     }
-    
+
     var fullName: String {
         return (prefix != nil ? prefix! + " " : "") + name
     }
@@ -292,3 +292,40 @@ func swapTwoStrings(_ a: inout String, _ b: inout String) {
 
 
 
+func enumerate(_ array: [Int]) {
+    defer {
+        print("\(array.first ?? -1)")
+    }
+    for i in array {
+        print(i)
+    }
+}
+enumerate([1, 1, 2])
+
+
+struct Istiak {
+    var name: String
+    var age: Int
+}
+
+class IstiakPerson {
+    var person: Istiak? {
+        didSet{
+            print("Called after setting the new value")
+                       if let name = person?.name {
+                           print("New name is \(name) and old name is \(String(describing: oldValue?.name))")
+                       }
+            
+        } willSet(myNewVal) {
+            
+            print("Called before setting the new value")
+                       if let newName = myNewVal?.name {
+                           print("New name is \(newName)")
+                       }
+        
+        }
+    }
+}
+
+var istiak = IstiakPerson()
+istiak.person = Istiak(name: "Babla", age: 23)
