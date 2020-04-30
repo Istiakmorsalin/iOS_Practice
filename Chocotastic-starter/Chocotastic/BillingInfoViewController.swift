@@ -36,7 +36,9 @@ class BillingInfoViewController: UIViewController {
   @IBOutlet private var expirationDateTextField: ValidatingTextField!
   @IBOutlet private var cvvTextField: ValidatingTextField!
   @IBOutlet private var purchaseButton: UIButton!
-  
+  private let disposeBag = DisposeBag()
+  private let throttleIntervalInMilliseconds = 100
+
   private let cardType: BehaviorRelay<CardType> = BehaviorRelay(value: .unknown)
 }
 
@@ -62,6 +64,64 @@ extension BillingInfoViewController {
 
 //MARK: - RX Setup
 private extension BillingInfoViewController {
+  func setupCardImageDisplay() {
+    cardType
+    .asObservable()
+      .subscribe(onNext: { [unowned self] cardType in
+        self.creditCardImageView.image = cardType.image
+      })
+    .disposed(by: disposeBag)
+  }
+  
+  func setupTextChangeHandling() {
+    let creditCardValid = creditCardNumberTextField
+      .rx
+      .text //1
+      .observeOn(MainScheduler.asyncInstance)
+      .distinctUntilChanged()
+      .throttle(.milliseconds(throttleIntervalInMilliseconds), scheduler: MainScheduler.instance) //2
+      .map { [unowned self] in
+        self.validate(cardText: $0) //3
+    }
+      
+    creditCardValid
+      .subscribe(onNext: { [unowned self] in
+        self.creditCardNumberTextField.valid = $0 //4
+      })
+      .disposed(by: disposeBag) //5
+    
+    let expirationValid = expirationDateTextField
+      .rx
+      .text
+      .observeOn(MainScheduler.asyncInstance)
+      .distinctUntilChanged()
+      .throttle(.milliseconds(throttleIntervalInMilliseconds), scheduler: MainScheduler.instance)
+      .map { [unowned self] in
+        self.validate(expirationDateText: $0)
+    }
+        
+    expirationValid
+      .subscribe(onNext: { [unowned self] in
+        self.expirationDateTextField.valid = $0
+      })
+      .disposed(by: disposeBag)
+        
+    let cvvValid = cvvTextField
+      .rx
+      .text
+      .observeOn(MainScheduler.asyncInstance)
+      .distinctUntilChanged()
+      .map { [unowned self] in
+        self.validate(cvvText: $0)
+    }
+        
+    cvvValid
+      .subscribe(onNext: { [unowned self] in
+        self.cvvTextField.valid = $0
+      })
+      .disposed(by: disposeBag)
+
+  }
 }
 
 //MARK: - Validation methods
