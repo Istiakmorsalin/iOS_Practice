@@ -380,7 +380,40 @@ for (index,value) in shoppingList.enumerated() {
     print("Item \(index + 1): \(value)")
 }
 
+//dictionary
+
+var namesOfIntegers = [Int: String]()
+
+namesOfIntegers[12] = "Twelve"
+
+for(key, value) in namesOfIntegers.enumerated() {
+    print("key:  \(key) value \(value)")
+}
+
+var airports: [String: String] = ["YYZ": "Toronto Pearson", "DUB": "Dublin"]
 
 
+print("The airports dictionary contains \(airports.count) items.")
+
+if airports.isEmpty {
+    print("The airports dictionary is empty.")
+} else {
+    print("The airports dictionary is not empty.")
+}
+
+airports["LHR"] = "London"
+
+for (airportCode, airportName) in airports.enumerated() {
+    print("\(airportCode): \(airportName)")
+}
+
+if let oldValue = airports.updateValue("XYZ", forKey: "DUB") {
+     print("The old value for DUB was \(oldValue).")
+}
 
 
+if let removedValue = airports.removeValue(forKey: "DUB") {
+    print("The removed airport's name is \(removedValue).")
+} else {
+    print("The airports dictionary does not contain a value for DUB.")
+}
