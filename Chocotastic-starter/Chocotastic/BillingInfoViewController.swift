@@ -49,6 +49,58 @@ extension BillingInfoViewController {
     title = "💳 Info"
     setupCardImageDisplay()
     setupTextChangeHandling()
+    
+    let sequence = Observable.just("Hello")
+    let arraySequence = Observable.from([1,2,3,4])
+    
+    let helloSequence = Observable.from(["H","e","l","l","o"])
+    let subscription = helloSequence.subscribe { event in
+      switch event {
+      case .next(let value):
+        print(value)
+      case .error(let error):
+        print(error)
+      case .completed:
+        print("completed")
+      }
+    }
+  .disposed(by: disposeBag)
+    
+    var publishSubject = PublishSubject<String>()
+    publishSubject.onNext("Hello")
+    publishSubject.onNext("World")
+    
+    let subscription1 = publishSubject.subscribe(onNext: {
+      print($0)
+    })
+    .disposed(by: disposeBag)
+    
+    Observable<Int>.of(1,2,3,4).map {value in
+      return value * 10
+    }.subscribe(onNext: {
+      print($0)
+    })
+    
+    let sequnce1  = Observable<Int>.of(1,3)
+    let sequence2 = Observable<Int>.of(3,6)
+    
+    let sequnceOfSequnces = Observable.of(sequnce1, sequence2)
+    
+    sequnceOfSequnces.flatMap {return $0}.subscribe(onNext: {
+      print($0)
+    })
+    
+    Observable.of(1,2,3,4,5).scan(0) { seed, value in
+        return seed + value
+    }.subscribe(onNext:{
+        print($0)
+    })
+    
+    Observable.of(2,30,22,5,60,1).filter{$0 > 10}.subscribe(onNext:{
+          print($0)
+    })
+    
+    
   }
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
