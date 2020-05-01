@@ -473,3 +473,6 @@ func minMax(array: [Int]) -> (min: Int, max: Int) {
     }
     return (currentMin, currentMax)
 }
+
+let bounds = minMax(array: [8, -6, 2, 109, 3, 71])
+print("min is \(bounds.min) and max is \(bounds.max)")
