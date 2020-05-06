@@ -24,4 +24,16 @@ class StudentTest: XCTestCase {
         XCTAssertTrue(student.validLastName())
     }
     
+    func testAddFriend() {
+         let student1 = Student(firstName: "Istiak", lastName: "Morsalin")
+        
+         let student2 = Student(firstName: "Tasnim", lastName: "Onisha")
+        
+        XCTAssertTrue(student1.friends.count == 0)
+        
+        student1.addFriend(friend: student2)
+        
+        XCTAssertFalse(student1.friends.count == 0)
+    }
+    
 }
