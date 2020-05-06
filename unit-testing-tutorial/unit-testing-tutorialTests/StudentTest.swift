@@ -13,12 +13,15 @@ import XCTest
 
 class StudentTest: XCTestCase {
    
-    func testValidFirstName() {
-        
+    func testInvalidFirstName() {
+        let student = Student(firstName: "Is", lastName: "Morsalin")
+        XCTAssertFalse(student.validFirstName())
     }
     
+    
     func testValidLastName () {
-        
+         let student = Student(firstName: "Is", lastName: "Morsalin")
+        XCTAssertTrue(student.validLastName())
     }
     
 }
